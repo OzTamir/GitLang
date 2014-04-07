@@ -62,15 +62,41 @@
     <script src="js/foundation.min.js"></script>
     <script>
       $(document).foundation();
+      $.variables = {};
+      $(document).on('click', '.repo' , function() {
+        reChart(false);
+      });
+
       $('#getChart').click(function(){
-        var user = document.getElementById("user_id").value;
-        if(user == '') {
+        $.variables.username = document.getElementById("user_id").value;
+        if($.variables.username == '') {
           alert('Please enter username!');
           return false;
         }
-        nav(user);
+        nav($.variables.username);
         return false;
       });
+
+      var reChart = function(isFirst){
+        $('#content').removeClass().addClass('animated fadeOutDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+          $(this).removeClass();
+          $("#content").load('chart.html');
+          if(isFirst){
+            repoChart($.variables.username, $.variables.repos[0]);
+            $('#chartTitle').html($.variables.repos[0]);
+          }
+          else {
+            var repo = document.URL.match(/\#(.*)/)[1];
+            repoChart($.variables.username, repo);
+          }
+          $('#content').removeClass().addClass('animated fadeInUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            if(!isFirst){
+              $('#chartTitle').html(repo);
+            }
+            $(this).removeClass();
+          });
+        });
+      };
 
       var nav = function(user){
         $('#content').removeClass().addClass('animated slideOutLeft').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
@@ -80,7 +106,8 @@
             $(this).removeClass();
           });
         });
-        var repos = getRepos(user);
+        $.variables.repos = getRepos(user);
+        reChart(true);
       };
     </script>
   </body>

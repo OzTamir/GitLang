@@ -84,8 +84,7 @@ function makeChart(languageJSON) {
 var createList = function(user, data){
 	var list = '';
 	for(var i = 0; i < data.length; i++) {
-		var href = "<a href='#" + data[i] + "' id='repoNum" + i + "' class='text-center'>" + data[i] + "</a>";
-		console.log(href);
+		var href = "<a href='#" + data[i] + "' id='" + data[i] + "' class='repo'>" + data[i] + "</a>";
 		if(i != data.length - 1){
 			href += ' | '
 		};
@@ -102,10 +101,10 @@ var getRepos = function(username){
 	$.getJSON('https://api.github.com/users/' + username + '/repos', function(data) {
 	    for (var i = 0; i < data.length; i++) { 
 		    repos.push(data[i].name);
-		    console.log(data[i].name);
 		};
 		// I know the placing is poor, but otherwise it runs before repo is finished initializing
 		var repoList = createList(username, repos);
+		$('#chartTitle').html($.variables.repos[0]);
 	});
 	return repos;
 };
