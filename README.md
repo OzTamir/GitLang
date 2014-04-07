@@ -1,7 +1,7 @@
 GitLang
 =========
 
-Just a little tool I wrote in Javascript to display a bar chart of the languges in a certin GitHub Repository.
+Just a little tool I wrote in Javascript to display a bar chart of the languages in a certin GitHub Repository.
 
 Demo: GitLang used on this repo
 ---
