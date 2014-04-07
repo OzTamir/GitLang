@@ -81,19 +81,19 @@ function makeChart(languageJSON) {
 }
 };
 
-var createList = function(data){
+var createList = function(user, data){
 	var list = '';
 	for(var i = 0; i < data.length; i++) {
-		var href = "<a href='#" + data[i] + "' id='repoNum" + i + "'>" + data[i] + "</a>";
+		var href = "<a href='#" + data[i] + "' id='repoNum" + i + "' class='text-center'>" + data[i] + "</a>";
 		console.log(href);
-		if(i == data.length - 1){
-			href += '|'
+		if(i != data.length - 1){
+			href += ' | '
 		};
 		list += href
 	}
-	$('#menu').html(repoList);
-	repoChart(user, repos[0]);
-	console.log(list);
+	$('#menu').html(list);
+	repoChart(user, data[0]);
+	$('#chartTitle').html(data[0]);
 	return list;
 };
 
@@ -104,8 +104,9 @@ var getRepos = function(username){
 		    repos.push(data[i].name);
 		    console.log(data[i].name);
 		};
+		// I know the placing is poor, but otherwise it runs before repo is finished initializing
+		var repoList = createList(username, repos);
 	});
-	var repoList = createList(repos);
 	return repos;
 };
 
