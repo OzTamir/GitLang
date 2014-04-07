@@ -19,9 +19,11 @@
     <div class="row">
       <div class="small-10 small-centered columns">
         <p class="text-center">
-          <h1 class="text-center">
-            GitLang
-          </h1>
+          <a href="index.html">
+            <h1 class="text-center" id='avater'>
+              GitLang
+            </h1>
+          </a>
         </p>
       </div>
     </div>
@@ -55,6 +57,20 @@
         </div>
     </div>
   </div>
+
+  <div class="small-8 small-centered columns" id="social">
+    <p></p>
+  <p class="text-center">
+      <a href="https://github.com/OzTamir" id="github"><i class="fa fa-github fa-3x" id="github_icon"></i></a>
+  </p>
+  <p class="text-center" id="git">
+    <small>
+      Built By Oz Tamir
+    </small>
+    <small>The source for this site is available on my <a href="https://github.com/OzTamir/GitLang">GitHub</a></small>
+  </p>
+  </div>
+
   </div>
   <script src='js/move.min.js'></script>
   <script src="main.js"></script>
@@ -62,11 +78,25 @@
     <script src="js/foundation.min.js"></script>
     <script>
       $(document).foundation();
+      $(document).ready(function(){
+        $('#avater').addClass('animated fadeInDown');
+        $('#social').addClass('animated fadeInUp');
+      });
       $.variables = {};
       $(document).on('click', '.repo' , function() {
         reChart(false);
       });
-
+      $("#user_id").keypress(function(event) {
+        if (event.which === 13) {
+        $.variables.username = document.getElementById("user_id").value;
+        if($.variables.username == '') {
+          alert('Please enter username!');
+          return false;
+        }
+        nav($.variables.username);
+        return false;
+        }
+      });
       $('#getChart').click(function(){
         $.variables.username = document.getElementById("user_id").value;
         if($.variables.username == '') {
@@ -77,7 +107,21 @@
         return false;
       });
 
+      $('#github').click(function(){
+          $('#avater').addClass('animated fadeOut').end();
+          $('#content').addClass('animated fadeOut').end();
+          $('#thankyou').addClass('animated fadeOut').end();
+          $('#twitter_icon').addClass('animated fadeOut').end();
+          move('#github_icon')
+          .scale(100)
+          .duration('4s')
+          .end();
+        });
+
       var reChart = function(isFirst){
+          $('#social').removeClass().addClass('animated fadeOutDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            $(this).removeClass();
+          });
         $('#content').removeClass().addClass('animated fadeOutDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
           $(this).removeClass();
           $("#content").load('chart.html');
@@ -95,19 +139,24 @@
             }
             $(this).removeClass();
           });
+          $('#social').addClass('animated fadeInUp');
         });
       };
 
       var nav = function(user){
+        $('#social').removeClass().addClass('animated fadeOutDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            $(this).removeClass();
+        });
         $('#content').removeClass().addClass('animated slideOutLeft').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
           $(this).removeClass();
           $("#content").load('chart.html');
           $('#content').removeClass().addClass('animated slideInRight').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
             $(this).removeClass();
           });
+          $.variables.repos = getRepos(user);
+          reChart(true);
+          $('#social').addClass('animated fadeInUp');
         });
-        $.variables.repos = getRepos(user);
-        reChart(true);
       };
     </script>
   </body>
